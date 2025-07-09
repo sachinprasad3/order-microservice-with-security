@@ -1,0 +1,32 @@
+package com.user.service.servise;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.user.service.entity.MyUser;
+import com.user.service.repo.MyUserRepo;
+
+@Service
+public class MyUserServiceImpl implements MyUserService{
+
+	@Autowired
+	private MyUserRepo userRepo;
+	
+	@Override
+	public MyUser create(MyUser myUser) {
+		return userRepo.save(myUser);
+	}
+
+	@Override
+	public MyUser getById(long id) {
+		return userRepo.findById(id).orElseThrow(()->new RuntimeException("user not found with id : "+id));
+	}
+
+	@Override
+	public List<MyUser> getAll() {
+		return userRepo.findAll();
+	}
+
+}

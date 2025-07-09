@@ -1,0 +1,6 @@
+package com.payment_service.client;
+
+
+public interface OrderClient {
+
+}

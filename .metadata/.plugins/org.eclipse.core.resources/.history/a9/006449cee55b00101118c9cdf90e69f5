@@ -1,0 +1,5 @@
+package com.product.service.entity;
+
+public class Product {
+
+}

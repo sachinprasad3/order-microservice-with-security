@@ -1,0 +1,8 @@
+package com.payment_service.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name = "notification-service", path = "/api/v1/notification")
+public interface NotificationClient {
+
+}

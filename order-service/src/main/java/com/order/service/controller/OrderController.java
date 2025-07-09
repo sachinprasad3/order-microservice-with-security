@@ -1,0 +1,65 @@
+package com.order.service.controller;
+
+import java.time.LocalDateTime;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.order.service.client.ProductClient;
+import com.order.service.client.UserClient;
+import com.order.service.dto.ProductDto;
+import com.order.service.entity.MyOrder;
+import com.order.service.servise.OrderService;
+import com.order.service.util.ApiResponse;
+import com.order.service.util.ApiResponse2;
+
+@RestController
+@RequestMapping("/api/v1/orders")
+public class OrderController {
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private UserClient userClient;
+	
+	@Autowired
+	private ProductClient productClient;
+	
+	@PostMapping
+	public ResponseEntity<ApiResponse> placeOrder(@RequestParam Long userId, @RequestParam Long productId, @RequestParam Integer quantity){
+		
+		ProductDto productDto = (ProductDto) productClient.getById(productId).getData();
+		System.out.println("productDto : "+productDto);
+		
+		Double totalPrice = productDto.getPrice() * quantity;
+		
+		MyOrder order = new MyOrder();
+		order.setProductId(productId);
+		order.setQuantity(quantity);
+		order.setTotalPrice(totalPrice);
+		order.setUserId(userId);
+		order.setOrderDate(LocalDateTime.now());
+		return new ResponseEntity<ApiResponse>(new ApiResponse(false, "success", orderService.create(order)), HttpStatus.CREATED);
+		
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ApiResponse> getOrderById(@PathVariable long id){
+		return new ResponseEntity<ApiResponse>(new ApiResponse(false, "success", orderService.getByOrderId(id)), HttpStatus.OK);	
+	}
+	
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<ApiResponse> getOrderByUserId(@PathVariable long id){
+		return new ResponseEntity<ApiResponse>(new ApiResponse(false, "success", orderService.getOrderByUserId(id)), HttpStatus.OK);	
+	}
+	
+}

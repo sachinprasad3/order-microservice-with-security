@@ -1,0 +1,32 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: user-service
+        uri : lb://USER-SERVICE
+        predicates:
+        - Path=/user-service/**
+        filters:
+        - RewritePath=/user-service/(?<segment>.*), /${segment}
+        
+      - id: product-service
+        uri: lb://PRODUCT-SERVICE
+        predicates:
+          - Path=/product-service/**
+        filters:
+          - RewritePath=/product-service/(?<segment>.*), /${segment}
+          
+      - id: order-service
+        uri: lb://ORDER-SERVICE
+        predicates:
+          - Path=/order-service/**
+        filters:
+          - RewritePath=/order-service/(?<segment>.*), /${segment}
+          
+      - id: payment-service
+        uri: lb://PAYMENT-SERVICE
+        predicates:
+          - Path=/payment-service/**
+        filters:
+          - RewritePath=/payment-service/(?<segment>.*), /${segment}
+      
