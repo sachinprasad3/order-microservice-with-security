@@ -1,0 +1,5 @@
+package com.user.service.security;
+
+public class JwtAuthenticationEntryPoint {
+
+}

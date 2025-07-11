@@ -1,13 +1,13 @@
 package com.payment_service.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import com.payment_service.dto.OrderDto;
 import com.payment_service.util.ApiResponse2;
 
-@FeignClient(name = "order-service", path = "/api/v1/orders")
+@FeignClient(name = "order-service", path = "/api/v1/orders", configuration = FeignClientConfig.class)
 public interface OrderClient {
 	
 	@GetMapping("/{id}")
